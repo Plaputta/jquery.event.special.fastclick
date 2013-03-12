@@ -1,0 +1,34 @@
+{
+  "name": "jquery.event.special.fastclick",
+  "title": "jQuery event fastclick",
+  "description": "Avoiding the 300ms delay of most mobile browsers before triggering the click event, to make mobile websites and html apps more responsive.",
+  "keywords": [
+    "mobile",
+    "click",
+    "fastclick",
+    "responsive",
+    "performance",
+    "tap",
+    "event"
+  ],
+  "version": "1.0.0",
+  "author": {
+    "name": "Tobias Plaputta",
+    "email": "tobias@nischenspringer.de",
+    "url": "http://www.nischenspringer.de"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://nischenspringer.de/license"
+    }
+  ],
+  "bugs": "https://github.com/Plaputta/jquery.event.special.fastclick/issues",
+  "homepage": "http://nischenspringer.de/jquery/fastclick",
+  "docs": "http://nischenspringer.de/jquery/fastclick",
+  "download": "http://nischenspringer.de/jquery/fastclick",
+  "demo": "http://nischenspringer.de/jquery/fastclick/demo",
+  "dependencies": {
+    "jquery": ">=1.4.2"
+  }
+}
