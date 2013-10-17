@@ -6,7 +6,9 @@ Mobile browsers wait about 300ms after touchend before triggering click events, 
 
 To prevent ghost clicks (because the browser still does trigger the click event after fastclick was triggered), any clicks on that area in a defined amount of time are cancelled.
 
-This version has been tested on iOS browsers - fastclick will not work on desktop browsers that don't support touch events (you can test it with ripple, though).
+This version has been tested on iOS browsers and in Google Chrome. 
+
+If you have [Modernizr](http://modernizr.com/) included, binding `fastclick` will fallback on jQuery's `click` when the browser doesn't support touch.
 
 ## Usage
 
