@@ -28,6 +28,10 @@
             }
         }
     };
+    var isTouchDevice = true;
+    if (Modernizr && Modernizr.hasOwnProperty('touch')) {
+        isTouchDevice = Modernizr.touch;
+    }
 
     // remove first ghost from list
     var freeGhost = function () {
@@ -59,6 +63,9 @@
         },
 
         add: function (obj) {
+            if (!isTouchDevice) {
+                return;
+            }
             // before jquery 1.4.2 the function needed to be returned, now the handler needs to be replaced!
             var $this = $(this);
             $this.data('objHandlers')[obj.guid] = obj;
@@ -94,6 +101,10 @@
         setup: function (data, namespaces, eventHandle) {
             // adding context
             var $this = $(this);
+            if (!isTouchDevice) {
+                $this.on('click', $.event.special.fastclick.handler);
+                return;
+            }
             $contexts = $contexts.add($this);
             if (!$this.data('objHandlers')) {
                 // setup data container and touchstart and touchend/touchcancel triggers (to be replaced by touchstart and touchend+touchcancel)
@@ -111,6 +122,10 @@
         teardown: function (obj) {
             // unbind stuff
             var $this = $(this);
+            if (!isTouchDevice) {
+                $this.off('click', $.event.special.fastclick.handler);
+                return;
+            }
             $contexts = $contexts.not($this);
             $this.off('touchstart', $.event.special.fastclick.touchstart);
             $this.off('touchmove', $.event.special.fastclick.touchmove);
@@ -123,11 +138,15 @@
         },
 
         remove: function (obj) {
+            if (!isTouchDevice) {
+                return;
+            }
             var $this = $(this);
             delete $this.data('objHandlers')[obj.guid];
         },
 
         handler: function (event) {
+            var typeBefore = event.type;
             event.type = 'fastclick';
 
             // before 1.9 your could use:
@@ -138,6 +157,9 @@
 
             // from 1.9 (also tested working with 1.8.2):
             $.event.trigger.call(this, event, {}, this, true);
+
+            // Reset the event object to previous state
+            event.type = typeBefore;
 
         }
     };
