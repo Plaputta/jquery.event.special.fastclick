@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta charset="UTF-8"/>
+    <title>jQuery Plugin: Event.Special.Fastclick Demo</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css"/>
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript">
+        $(document).bind("mobileinit", function(){
+          $.extend(  $.mobile , {
+            ajaxEnabled: false
+          });
+        });
+    </script>
+    <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+    <script src="../jquery.event.special.fastclick.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            function raiseCount(identifier, num) {
+                var $el = $(identifier),
+                        c = parseInt($el.text());
+                $el.text(c + num);
+            }
+
+            $('#part1').on('click', function (e) {
+                e.preventDefault();
+                raiseCount('#count1', 1);
+            });
+            $('#part2').on('vclick', function (e) {
+                e.preventDefault();
+                raiseCount('#count2', 1);
+            });
+
+            var clickEvent = 'fastclick';
+
+
+            if (!navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
+                clickEvent = 'vclick';
+                $('div[data-role="content"]').prepend('<p><strong>You are not using an iOS device - fastclick defaults to vclick. <a href="demo-all.html">Click here to use fastclick anyway.</a></strong></p>');
+            }
+
+            $('#part3').on(clickEvent, function (e) {
+                e.preventDefault();
+                raiseCount('#count3', 1);
+            });
+            $('#part4').on(clickEvent, 'a[data-role="button"]', function (e) {
+                e.preventDefault();
+                raiseCount('#count4', parseInt($(this).attr("data-num")));
+            });
+        });
+    </script>
+</head>
+
+<body>
+<div data-role="page">
+    <div data-role="header">
+        <h1>Fastclick Demo</h1>
+    </div>
+    <div data-role="content">
+        <p>Part 1: Normal click event</p>
+
+        <p>
+            <a href="#" id="part1" data-role="button">click (<span id="count1">0</span>)</a>
+        </p>
+
+        <p>Part 2: JQM vclick event</p>
+
+        <p>
+            <a href="#" id="part2" data-role="button">vclick (<span id="count2">0</span>)</a>
+        </p>
+
+        <p>Part 3: Fastclick without delegation</p>
+
+        <p>
+            <a href="#" id="part3" data-role="button">fastclick (<span id="count3">0</span>)</a>
+        </p>
+
+        <p>Part 4: Fastclick with delegation (<span id="count4">0</span>)</p>
+
+        <p id="part4">
+            <a href="#" data-num="1" data-role="button">add 1</a>
+            <a href="#" data-num="2" data-role="button">add 2</a>
+            <a href="#" data-num="10" data-role="button">add 10</a>
+        </p>
+    </div>
+</div>
+</body>
+</div>
