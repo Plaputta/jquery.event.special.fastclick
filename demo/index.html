@@ -46,6 +46,15 @@
                 e.preventDefault();
                 raiseCount('#count4', parseInt($(this).attr("data-num")));
             });
+
+            var eventDelegationCallback = function (e) {
+                e.preventDefault();
+                raiseCount('#count5', parseInt($(this).attr("data-num")));
+            };
+            var $part5 = $('#part5');
+            $part5.on('fastclick.part5', 'a[data-role="button"]', eventDelegationCallback);
+            $part5.off('.part5');
+            $part5.on('fastclick.part5', 'a[data-role="button"]', eventDelegationCallback);
         });
     </script>
 </head>
@@ -77,6 +86,13 @@
         <p>Part 4: Fastclick with delegation (<span id="count4">0</span>)</p>
 
         <p id="part4">
+            <a href="#" data-num="1" data-role="button">add 1</a>
+            <a href="#" data-num="2" data-role="button">add 2</a>
+            <a href="#" data-num="10" data-role="button">add 10</a>
+        </p>
+
+        <p>Part 5: Fastclick with delegation (<span id="count5">0</span>) in a named group</p>
+        <p id="part5">
             <a href="#" data-num="1" data-role="button">add 1</a>
             <a href="#" data-num="2" data-role="button">add 2</a>
             <a href="#" data-num="10" data-role="button">add 10</a>
