@@ -14,6 +14,7 @@
         });
     </script>
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
     <script src="../jquery.event.special.fastclick.js"></script>
     <script type="text/javascript">
         $(function () {
@@ -32,19 +33,16 @@
                 raiseCount('#count2', 1);
             });
 
-            var clickEvent = 'fastclick';
 
-
-            if (!navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-                clickEvent = 'vclick';
-                $('div[data-role="content"]').prepend('<p><strong>You are not using an iOS device - fastclick defaults to vclick. <a href="demo-all.html">Click here to use fastclick anyway.</a></strong></p>');
+            if (!Modernizr.touch) {
+                $('div[data-role="content"]').prepend('<p><strong>You are not using an iOS device - fastclick will fallback to click event');
             }
 
-            $('#part3').on(clickEvent, function (e) {
+            $('#part3').on('fastclick', function (e) {
                 e.preventDefault();
                 raiseCount('#count3', 1);
             });
-            $('#part4').on(clickEvent, 'a[data-role="button"]', function (e) {
+            $('#part4').on('fastclick', 'a[data-role="button"]', function (e) {
                 e.preventDefault();
                 raiseCount('#count4', parseInt($(this).attr("data-num")));
             });
