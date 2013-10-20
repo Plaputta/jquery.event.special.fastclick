@@ -68,7 +68,6 @@
             }
             // before jquery 1.4.2 the function needed to be returned, now the handler needs to be replaced!
             var $this = $(this);
-            $this.data('objHandlers')[obj.guid] = obj;
 
             var handler = obj.handler;
             obj.handler = function (event) {
@@ -80,20 +79,20 @@
                     ghosts.push({x: fastclick.startX, y: fastclick.startY});
                     window.setTimeout(freeGhost, ghostDuration);
 
-                    var self = this;
-                    var $elements = $([]);
                     var args = arguments;
-                    $.each($this.data('objHandlers'), function () {
-                        // setup without delegation? check on element itself
-                        // or: used delegation? grab all children matching the selector and check against each
-                        if (!this.selector) {
-                            if ($this[0] == event.target || $this.has(event.target).length > 0) handler.apply($this, args);
-                        } else {
-                            $(this.selector, $this).each(function () {
-                                if (this == event.target  || $(this).has(event.target).length > 0) handler.apply(this, args);
-                            });
+                    // setup without delegation? check on element itself
+                    // or: used delegation? grab all children matching the selector and check against each
+                    if (!obj.selector) {
+                        if ($this[0] == event.target || $this.has(event.target).length > 0) {
+                            handler.apply($this, args);
                         }
-                    });
+                    } else {
+                        $(obj.selector, $this).each(function () {
+                            if (this == event.target  || $(this).has(event.target).length > 0) {
+                                handler.apply(this, args);
+                            }
+                        });
+                    }
                 }
             };
         },
@@ -106,12 +105,8 @@
                 return;
             }
             $contexts = $contexts.add($this);
-            if (!$this.data('objHandlers')) {
-                // setup data container and touchstart and touchend/touchcancel triggers (to be replaced by touchstart and touchend+touchcancel)
-                $this.data('objHandlers', {});
-                $this.on('touchstart', $.event.special.fastclick.touchstart);
-                $this.on('touchend touchcancel', $.event.special.fastclick.handler);
-            }
+            $this.on('touchstart', $.event.special.fastclick.touchstart);
+            $this.on('touchend touchcancel', $.event.special.fastclick.handler);
             // first setup? call ghostbuster for support ;)
             if (!fastclick.ghostbuster) {
                 $(document).on('click vclick', killGhost);
@@ -138,11 +133,6 @@
         },
 
         remove: function (obj) {
-            if (!isTouchDevice) {
-                return;
-            }
-            var $this = $(this);
-            delete $this.data('objHandlers')[obj.guid];
         },
 
         handler: function (event) {
